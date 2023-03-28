@@ -8,8 +8,8 @@ public class Program {
         //new Program().delete1Node();
         //new Program().parcours();
         //new Program().parcoursBetter();
-        new Program().parcoursLimitedTyped();
-
+        //new Program().parcoursLimitedTyped();
+        new Program().exerciceApplicatifTypedLimited();
 
     }
     public void createGraph(){
@@ -142,6 +142,83 @@ public class Program {
             sb3.append("-->" + n.getName());
         }
         System.out.println(sb3.toString());
+
+    }
+    public void exerciceApplicatifTypedLimited(){
+        Graph ex= new Graph("exTypeLimite");
+
+        Person paul= new Person("Paul", "Neuchatel");
+        Person jean= new Person("Jean", "Neuchatel");
+        Person alfred= new Person("Alfred", "Lausanne");
+        Person julie= new Person("Julie", "Cernier");
+        Person lucie= new Person("Lucie", "Neuchatel");
+        Person albert= new Person("Albert", "Lausanne");
+
+        ex.addNode(paul);
+        ex.addNode(jean);
+        ex.addNode(alfred);
+        ex.addNode(julie);
+        ex.addNode(lucie);
+        ex.addNode(albert);
+
+        WebSite netflix = new WebSite("Netflix");
+        WebSite amazonPrime = new WebSite("Amazon Prime Video");
+        WebSite disney = new WebSite("Disney +");
+
+        ex.addNode(netflix);
+        ex.addNode(amazonPrime);
+        ex.addNode(disney);
+
+        paul.addFriend("a1", 0, lucie, paul);
+        paul.addFriend("a2", 0, jean, paul);
+        paul.addFriend("a3", 0, julie, paul);
+
+        jean.addFriend("a4", 0, alfred, jean);
+
+        julie.addFriend("a5", 0, albert, julie);
+
+        paul.listenToWebSite("u1", 0, amazonPrime,paul);
+        paul.listenToWebSite("u2", 0, netflix,paul);
+
+        lucie.listenToWebSite("u3", 0, amazonPrime,lucie);
+        lucie.listenToWebSite("u4", 0, netflix,lucie);
+
+        albert.listenToWebSite("u5", 0, amazonPrime, albert);
+        albert.listenToWebSite("u6", 0, disney, albert);
+
+        alfred.listenToWebSite("u7", 0, netflix, alfred);
+
+        System.out.println("Q1: Lister tous les sites de streaming regardes par Paul: ");
+        StringBuilder sb = new StringBuilder();
+        for(Node n: ex.widthWayLimitedTyped(ex.findNode("Paul"), 3, IsListeningTo.class)){
+            sb.append("--> " + n.getName());
+        }
+        System.out.println(sb.toString());
+        // on peut vérifier si la liste des exiting edges contient un edge de classe isWatching avec u strem
+        // on pourrait réutiliser la méthode de parcours en largeur typé, avec niveau 1 isListeningTo et dnas le cas ou il y a on ajoute au sb
+        System.out.println("Q2: Donner tous les amis de Paul jusqu'au 2 eme niveau qui regarde un site de streaming ");
+        StringBuilder sb1 = new StringBuilder();
+
+        for(Node n: ex.widthWayLimitedTyped(ex.findNode("Paul"), 2, IsFriend.class)){
+            if(n.getExitingEdges().values().stream().anyMatch(edge -> edge instanceof IsListeningTo)){
+                sb1.append("--> " + n.getName());
+            }
+        }
+        System.out.println(sb1.toString());
+
+        System.out.println("Q3: Lister tous les amis(1er niv) de Paul qui habitent à NE et qui regarde Amazon");
+        StringBuilder sb2 = new StringBuilder();
+
+        //commment acceder aux méthodes de Person, alors qu'on boucle sur les nodes?
+        //comment accéder au filtre que le noeud de dest doit etre amazon?
+        for(Node n: ex.widthWayLimitedTyped(ex.findNode("Paul"), 1, IsFriend.class)) {
+                if (((Person) n).getCity().equals("Neuchatel")) { //vérifier que la personne ai un attribut city "neuchatel"
+                    if (ex.widthWayLimitedTyped(ex.findNode(n.getName()), 1, IsListeningTo.class).contains(amazonPrime)){
+                        sb2.append("--> " + n.getName());
+                    }
+                }
+        }
+        System.out.println(sb2.toString());
 
     }
 }

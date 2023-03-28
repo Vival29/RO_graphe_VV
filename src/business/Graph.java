@@ -121,7 +121,7 @@ public class Graph {
         List<Node> result = new ArrayList<>();
         start.setVisited(true);
         start.setLevel(0);
-        mem.addFirst(start);
+         mem.addFirst(start);
         while(!mem.isEmpty()){
             Node liveNode = mem.removeLast();
             result.add(liveNode);
@@ -189,7 +189,7 @@ public class Graph {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("----- My graph " + getName() +  "-----\n");
+        sb.append("----- My graph " + this.getName() +  "-----\n");
         for(Map.Entry n: nodeList.entrySet()){
             sb.append(n.getValue().toString());
             sb.append("\n");
