@@ -209,10 +209,12 @@ public class Program {
         System.out.println("Q3: Lister tous les amis(1er niv) de Paul qui habitent à NE et qui regarde Amazon");
         StringBuilder sb2 = new StringBuilder();
 
-        //commment acceder aux méthodes de Person, alors qu'on boucle sur les nodes?
+        //commment acceder aux méthodes de Person, alors qu'on boucle sur les nodes--> avec ((Person) n).
         //comment accéder au filtre que le noeud de dest doit etre amazon?
         for(Node n: ex.widthWayLimitedTyped(ex.findNode("Paul"), 1, IsFriend.class)) {
-                if (((Person) n).getCity().equals("Neuchatel")) { //vérifier que la personne ai un attribut city "neuchatel"
+            //vérifier que la personne ai un attribut city "neuchatel"
+            if (((Person) n).getCity().equals("Neuchatel")) {
+                    // vérifier que la personne ai un arc de type écoute/regarde le website spécific amazonPrime
                     if (ex.widthWayLimitedTyped(ex.findNode(n.getName()), 1, IsListeningTo.class).contains(amazonPrime)){
                         sb2.append("--> " + n.getName());
                     }
