@@ -159,30 +159,86 @@ public class Graph {
         }
         return result;
     }
-    public List<Node> depthWayBetter(Node start, int maxDepth) {
-        resetNodes();
-        Stack<business.Node> mem = new Stack<>();
-        List<business.Node> result = new ArrayList<>();
-        start.setVisited(true);
-        mem.push(start);
+    //algo Dijkstra
+    private void dijkstra(Node start){
+        this.resetNodes();
+        Node current;
+        Node dest;
+        double currentWeight;
+        ArrayList<Node> mem = new ArrayList<>();
+        start.setDjikstraWeight(0);
+        mem.add(start);
+
         while(!mem.isEmpty()){
-            business.Node liveNode = mem.pop();
-            result.add(liveNode);
-            for(Edge e: liveNode.getExitingEdges().values()){
-                business.Node dest = e.getDest();
-                if(!dest.isVisited()){
-                    dest.setVisited(true);
-                    mem.push(dest);
+            mem.sort(new DijkstraNodeComparator());
+            current = (Node) mem.remove(0);
+            Node copy =new Node(current);
+            start.getTableVPCC().put(copy.getName(), copy);
+            for(Edge e:current.getExitingEdges().values()){
+                dest = e.getDest();
+                currentWeight= current.getDjikstraWeight() + e.getMetric();
+
+                if(dest.getDjikstraWeight() == Integer.MAX_VALUE){
+                    dest.setDjikstraWeight(currentWeight);
+                    dest.setPredecessor(current);
+                    mem.add(dest);
                 }
+                if(currentWeight < dest.getDjikstraWeight()){
+                    mem.remove(dest);
+                    dest.setDjikstraWeight(currentWeight);
+                    dest.setPredecessor(current);
+                    mem.add(dest);
+                }
+
             }
         }
-        return result;
+
+
     }
+    public void vectorShortestPath(String nsrc, String ndest){
+        Node src = findNode(nsrc);
+
+        System.out.println("The shortest path between " + nsrc + " and " + ndest);
+        if(src.getTableVPCC().size() < 1){
+            src.setTableVPCC(new HashMap<>());
+            dijkstra(src);
+        }
+        Node destVPCC = src.getTableVPCC().get(ndest);
+        if(destVPCC == null ){
+            System.out.println("No path between " + nsrc + " and " + ndest);
+        } else {
+            System.out.println("The shortest path length is " + destVPCC.getDjikstraWeight());
+        }
+        LinkedList<Node> path = new LinkedList<Node>();
+        //faire l'affichage des node en linked list, parcourir.
+
+        while (destVPCC != null){
+            path.addFirst(destVPCC);
+            destVPCC = src.getTableVPCC().get(destVPCC.getName()).getPredecessor();
+        }
+        //affichage
+        StringBuilder sb = new StringBuilder();
+        sb.append("this is the way: ");
+        for (Node n:path) {
+            sb.append(" --> ").append(n.getName());
+        }
+        System.out.println(sb.toString());
+    }
+
+
+    private void deleteTablesVPCC(){
+        for(Node n: nodeList.values()){
+            n.setTableVPCC(null);
+        }
+    }
+
     //gére la réinitialisation des attributs techniques du noeud
     public void resetNodes() {
         for(Node n : nodeList.values()){
             n.setVisited(false);
             n.setLevel(0);
+            n.setPredecessor(null);
+            n.setDjikstraWeight(Integer.MAX_VALUE);
 
         }
     }

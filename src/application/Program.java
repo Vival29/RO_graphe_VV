@@ -9,9 +9,13 @@ public class Program {
         //new Program().parcours();
         //new Program().parcoursBetter();
         //new Program().parcoursLimitedTyped();
-        new Program().exerciceApplicatifTypedLimited();
+        //new Program().exerciceApplicatifTypedLimited();
+        new Program().djikstra();
 
     }
+
+
+
     public void createGraph(){
         Graph g1 = new Graph("G1");
         g1.addEdge("X1","X2",7,"u1");
@@ -222,5 +226,28 @@ public class Program {
         }
         System.out.println(sb2.toString());
 
+    }
+
+    private void djikstra() {
+        Graph g = new Graph("G");
+        g.addEdge("A","B",4,"u1");
+        g.addEdge("B","C",5,"u2");
+        g.addEdge("C","E",10,"u3");
+        g.addEdge("B","D",8,"u4");
+        g.addEdge("D","C",5,"u5");
+        g.addEdge("C","F",3,"u6");
+        g.addEdge("F","E",2,"u7");
+        g.addEdge("D","F",3,"u8");
+        g.addEdge("G","F",4,"u9");
+        g.addEdge("D","G",2,"u10");
+        g.addEdge("A","G",1,"u11");
+        g.addEdge("H","A",2,"u12");
+        g.addEdge("H","G",9,"u13");
+        g.addEdge("D","A",1,"u14");
+
+        g.vectorShortestPath("H", "E");
+        g.vectorShortestPath("D", "B");
+        g.vectorShortestPath("H", "C");
+        g.vectorShortestPath("A", "F");
     }
 }

@@ -7,10 +7,25 @@ public class Node {
     protected String name;
     protected boolean visited = false;
     protected Integer level;
+    protected double djikstraWeight;
+    protected Node predecessor;
+    protected HashMap<String, Node> tableVPCC;
     protected HashMap<String, Edge> exitingEdges = new HashMap<>();
     protected HashMap<String, Edge> incomingEdges = new HashMap<>();
     public Node(String name) {
         this.name = name;
+        this.tableVPCC = new HashMap<>();
+    }
+    public Node(Node n){
+        this.name = n.getName();
+        this.visited = n.isVisited();
+        this.level = n.getLevel();
+        this.djikstraWeight = n.getDjikstraWeight();
+        this.predecessor = n.getPredecessor();
+        this.tableVPCC = n.getTableVPCC();
+        this.exitingEdges = n.getExitingEdges();
+        this.incomingEdges = n.getIncomingEdges();
+
     }
     public String getName() {
         return name;
@@ -29,6 +44,30 @@ public class Node {
     }
     public void setExitingEdges(HashMap<String, Edge> exitingEdges) {
         this.exitingEdges = exitingEdges;
+    }
+
+    public double getDjikstraWeight() {
+        return djikstraWeight;
+    }
+
+    public void setDjikstraWeight(double djikstraWeight) {
+        this.djikstraWeight = djikstraWeight;
+    }
+
+    public Node getPredecessor() {
+        return predecessor;
+    }
+
+    public void setPredecessor(Node predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public HashMap<String, Node> getTableVPCC() {
+        return tableVPCC;
+    }
+
+    public void setTableVPCC(HashMap<String, Node> tableVPCC) {
+        this.tableVPCC = tableVPCC;
     }
 
     public boolean isVisited() {
@@ -67,6 +106,7 @@ public class Node {
             this.incomingEdges.remove(name);
         }
     }
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
