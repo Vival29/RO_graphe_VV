@@ -1,9 +1,10 @@
 package business;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Node {
+public class Node implements Serializable {
     protected String name;
     protected boolean visited = false;
     protected Integer level;
@@ -16,15 +17,25 @@ public class Node {
         this.name = name;
         this.tableVPCC = new HashMap<>();
     }
-    public Node(Node n){
-        this.name = n.getName();
-        this.visited = n.isVisited();
-        this.level = n.getLevel();
-        this.djikstraWeight = n.getDjikstraWeight();
-        this.predecessor = n.getPredecessor();
-        this.tableVPCC = n.getTableVPCC();
-        this.exitingEdges = n.getExitingEdges();
-        this.incomingEdges = n.getIncomingEdges();
+    public static Node copy(Node n){
+
+        try {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            ObjectOutputStream cout = null;
+            cout = new ObjectOutputStream(bout);
+            cout.writeObject(n);
+            byte[] bytes = bout.toByteArray();
+            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+            ObjectInputStream cin = new ObjectInputStream(bin);
+            Node clone = (Node) cin.readObject();
+            clone.setName(n.getName() + "_copy");
+            return clone;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
     public String getName() {

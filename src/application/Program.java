@@ -2,6 +2,7 @@ package application;
 import business.*;
 
 public class Program {
+    // séléctionner le "test" que vous voulez faire et run
     public static void main(String[] args) {
 
         //new Program().createGraph();
@@ -229,6 +230,7 @@ public class Program {
     }
 
     private void djikstra() {
+        //création du graphe comme dans les slides du cours
         Graph g = new Graph("G");
         g.addEdge("A","B",4,"u1");
         g.addEdge("B","C",5,"u2");
@@ -244,7 +246,7 @@ public class Program {
         g.addEdge("H","A",2,"u12");
         g.addEdge("H","G",9,"u13");
         g.addEdge("D","A",1,"u14");
-
+        //tester le plus court chemin entre différents noeuds, la méthode vectorShortestPath() utilise djikstra()
         g.vectorShortestPath("H", "E");
         g.vectorShortestPath("D", "B");
         g.vectorShortestPath("H", "C");

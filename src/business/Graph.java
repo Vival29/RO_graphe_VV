@@ -1,8 +1,11 @@
 package business;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Graph {
+import static business.Node.copy;
+
+public class Graph implements Serializable {
     protected String name;
     protected HashMap<String, Node> nodeList = new HashMap<>();
     public Graph(String name) {
@@ -159,21 +162,31 @@ public class Graph {
         }
         return result;
     }
-    //algo Dijkstra
+    //algo Dijkstra, qui permet de créer les tables VPCC sur lesquesl l'algo du plus court chemin se base pour
+    //calculer le plus court chemin entre un noeud de départ et un d'arrivé.
     private void dijkstra(Node start){
+        //quand on applique Djikstra c'est qu'on doit remplacer la table VPCC du noeud courant car le graphe a changé
+        //donc il faut reset tous les éléments du noeud courant.
         this.resetNodes();
         Node current;
         Node dest;
         double currentWeight;
+        //la mémoire dans laquelle on reprend toujours l'élément avec la valeur d'Edge la plus petite.
         ArrayList<Node> mem = new ArrayList<>();
+        //on commence par mettre le poid djikstra à 0 sur le noeud courant, car c'est notre noeu de départ.
         start.setDjikstraWeight(0);
         mem.add(start);
 
         while(!mem.isEmpty()){
+            //on ordre la mémoire pour avoir en premier l'élément avec DjikstraWeight le plus petit.
             mem.sort(new DijkstraNodeComparator());
             current = (Node) mem.remove(0);
-            Node copy =new Node(current);
+            //la copie du noeud qui est faite ici permet par récursion de copier tous les noeuds
+            Node copy = copy(current);
             start.getTableVPCC().put(copy.getName(), copy);
+            //pour chaque arc sortant on check le djikstra weight et s'il est encore infini donc pas découvert on entre
+            //dans la premiere boucle if, et on le met à jour, sinon on le met à jour en supprimant celui qu'on avait
+            // dans la mémoire et en mettant le nouveau, avec le nouveau djikstraWeight
             for(Edge e:current.getExitingEdges().values()){
                 dest = e.getDest();
                 currentWeight= current.getDjikstraWeight() + e.getMetric();
@@ -195,6 +208,8 @@ public class Graph {
 
 
     }
+    //méthode qui utilise Djikstra pour calculer le plus court chemin entre deux Noeud en utilisant
+    // la table VPCC du noeud start
     public void vectorShortestPath(String nsrc, String ndest){
         Node src = findNode(nsrc);
 

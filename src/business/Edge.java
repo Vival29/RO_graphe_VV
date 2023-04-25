@@ -1,5 +1,8 @@
 package business;
-public class Edge {
+
+import java.io.Serializable;
+
+public class Edge implements Serializable {
     protected String name;
     protected double metric;
     protected Node dest;
