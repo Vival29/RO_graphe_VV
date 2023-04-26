@@ -28,7 +28,6 @@ public class Node implements Serializable {
             ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
             ObjectInputStream cin = new ObjectInputStream(bin);
             Node clone = (Node) cin.readObject();
-            clone.setName(n.getName() + "_copy");
             return clone;
         } catch (IOException e) {
             throw new RuntimeException(e);
