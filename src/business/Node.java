@@ -10,33 +10,18 @@ public class Node implements Serializable {
     protected Integer level;
     protected double djikstraWeight;
     protected Node predecessor;
+    protected Integer scaleIn;
+    protected Integer scaleOut;
+    protected Integer nodeScale;
     protected HashMap<String, Node> tableVPCC;
     protected HashMap<String, Edge> exitingEdges = new HashMap<>();
     protected HashMap<String, Edge> incomingEdges = new HashMap<>();
+    //protected Integer NodeScale;
     public Node(String name) {
         this.name = name;
         this.tableVPCC = new HashMap<>();
     }
-    public static Node copy(Node n){
 
-        try {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            ObjectOutputStream cout = null;
-            cout = new ObjectOutputStream(bout);
-            cout.writeObject(n);
-            byte[] bytes = bout.toByteArray();
-            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-            ObjectInputStream cin = new ObjectInputStream(bin);
-            Node clone = (Node) cin.readObject();
-            return clone;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
     public String getName() {
         return name;
     }
@@ -70,6 +55,34 @@ public class Node implements Serializable {
 
     public void setPredecessor(Node predecessor) {
         this.predecessor = predecessor;
+    }
+
+    public Integer getScaleIn() {
+        return scaleIn;
+    }
+
+    public void setScaleIn(Integer scaleIn) {
+        this.scaleIn = scaleIn;
+    }
+
+    public Integer getScaleOut() {
+        return scaleOut;
+    }
+
+    public void setScaleOut(Integer scaleOut) {
+        this.scaleOut = scaleOut;
+    }
+
+    public Integer getNodeScale() {
+        return nodeScale;
+    }
+    public void setNodeScale(Integer nodeScale) {
+        this.nodeScale = nodeScale;
+    }
+    public void calculateScale(){
+        this.setScaleIn(this.getIncomingEdges().size());
+        this.setScaleOut(this.getExitingEdges().size());
+        this.setNodeScale(this.scaleOut + this.scaleIn);
     }
 
     public HashMap<String, Node> getTableVPCC() {
@@ -116,8 +129,39 @@ public class Node implements Serializable {
             this.incomingEdges.remove(name);
         }
     }
+    public static Node copyNode(Node n){
 
+        try {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            ObjectOutputStream cout = new ObjectOutputStream(bout);
+            cout.writeObject(n);
+            byte[] bytes = bout.toByteArray();
+            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+            ObjectInputStream cin = new ObjectInputStream(bin);
+            Node clone = (Node) cin.readObject();
+            return clone;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    public void setNodeScale(){
+        this.scaleIn = this.getIncomingEdges().size();
+        this.scaleOut = this.getExitingEdges().size();
+
+    }
     @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getName());
+
+        return sb.toString();
+    }
+    //liste incidence
+    /*@Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("w++("+ this.getName() +") = {");
@@ -136,5 +180,5 @@ public class Node implements Serializable {
         }
         sb.append("}");
         return sb.toString();
-    }
+    }*/
 }

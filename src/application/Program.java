@@ -1,6 +1,8 @@
 package application;
 import business.*;
 
+import java.io.IOException;
+
 public class Program {
     // séléctionner le "test" que vous voulez faire et run
     public static void main(String[] args) {
@@ -11,7 +13,8 @@ public class Program {
         //new Program().parcoursBetter();
         //new Program().parcoursLimitedTyped();
         //new Program().exerciceApplicatifTypedLimited();
-        new Program().djikstra();
+        //new Program().djikstra();
+        new Program().triTopologiqueDegre();
 
     }
 
@@ -251,5 +254,28 @@ public class Program {
         g.vectorShortestPath("D", "B");
         g.vectorShortestPath("H", "C");
         g.vectorShortestPath("A", "F");
+    }
+    private void triTopologiqueDegre(){
+        Graph g = new Graph("G");
+        g.addEdge("B","A",5,"u1");
+        g.addEdge("B","C",5,"u2");
+        g.addEdge("B","D",3,"u3");
+        g.addEdge("C","E",1,"u4");
+        g.addEdge("C","D",1,"u5");
+        g.addEdge("E","D",1,"u6");
+        g.addEdge("D","A",10,"u7");
+        g.addEdge("D","G",5,"u8");
+        g.addEdge("E","G",1,"u9");
+        g.addEdge("G","F",5,"u10");
+        g.addEdge("A","F",1,"u11");
+
+        try {
+            g.triTopologique();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(g.getMiseEnRang().values().toString());
     }
 }

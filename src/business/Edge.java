@@ -45,11 +45,16 @@ public class Edge implements Serializable {
     public void setDest(Node dest) {
         this.dest = dest;
     }
-
     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getName());
+        return sb.toString();
+    }
+    /*@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("(" + this.src.getName() + ", " + this.dest.getName() + ", " + this.metric + ")" );
         return sb.toString();
-    }
+    }*/
 }
