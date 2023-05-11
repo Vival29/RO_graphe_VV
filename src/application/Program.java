@@ -14,7 +14,8 @@ public class Program {
         //new Program().parcoursLimitedTyped();
         //new Program().exerciceApplicatifTypedLimited();
         //new Program().djikstra();
-        new Program().triTopologiqueDegre();
+        //new Program().triTopologiqueDegre();
+        new Program().ordonnancementAuPlusTotAuPlusTard();
 
     }
 
@@ -277,5 +278,39 @@ public class Program {
             throw new RuntimeException(e);
         }
         System.out.println(g.getMiseEnRang().values().toString());
+    }
+    private void ordonnancementAuPlusTotAuPlusTard(){
+        Graph g = new Graph("G");
+        g.addEdge("0","1",2,"A");
+        g.addEdge("0","2",2,"K");
+        g.addEdge("1","3",0,"u1");
+        g.addEdge("2","3",0,"u2");
+        g.addEdge("3","4",5,"B");
+        g.addEdge("4","5",3,"D");
+        g.addEdge("4","6",1,"C");
+        g.addEdge("5","9",0,"u3");
+        g.addEdge("5","7",0,"u4");
+        g.addEdge("6","9",0,"u5");
+        g.addEdge("6","11",0,"u6");
+        g.addEdge("9","10",2,"E");
+        g.addEdge("10","7",0,"u7");
+        g.addEdge("10","11",0,"u8");
+        g.addEdge("7","8",5,"G");
+        g.addEdge("11","12",4,"F");
+        g.addEdge("10","11",0,"u8");
+        g.addEdge("8","13",0,"u9");
+        g.addEdge("12","13",0,"u10");
+        g.addEdge("13","14",1,"H");
+
+        try {
+            g.ordPlusTot();
+            System.out.println("ord+tard: \n");
+            g.ordPlusTard();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

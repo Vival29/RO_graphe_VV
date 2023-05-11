@@ -5,7 +5,7 @@ public class IsFriend extends Edge {
         super(name);
     }
 
-    public IsFriend(String name, double metric, Person dest, Person src) {
+    public IsFriend(String name, Integer metric, Person dest, Person src) {
         super(name, metric, dest, src);
     }
 }

@@ -13,6 +13,8 @@ public class Node implements Serializable {
     protected Integer scaleIn;
     protected Integer scaleOut;
     protected Integer nodeScale;
+    protected Integer ordTot;
+    protected Integer ordTard;
     protected HashMap<String, Node> tableVPCC;
     protected HashMap<String, Edge> exitingEdges = new HashMap<>();
     protected HashMap<String, Edge> incomingEdges = new HashMap<>();
@@ -109,12 +111,12 @@ public class Node implements Serializable {
         this.level = level;
     }
 
-    public void addEdge(String name, double metric, Node dest, Node src){
+    public void addEdge(String name, Integer metric, Node dest, Node src){
             Edge edge = new Edge(name, metric, dest, src);
             src.exitingEdges.put(name, edge);
             dest.incomingEdges.put(name, edge);
     }
-    public void addLike(String name, double metric, Node dest, Node src){
+    public void addLike(String name, Integer metric, Node dest, Node src){
         IsLikes likes = new IsLikes(name, metric, dest, src);
         src.exitingEdges.put(name, likes);
     }
@@ -153,6 +155,23 @@ public class Node implements Serializable {
         this.scaleOut = this.getExitingEdges().size();
 
     }
+
+    public Integer getOrdTot() {
+        return ordTot;
+    }
+
+    public void setOrdTot(Integer ordTot) {
+        this.ordTot = ordTot;
+    }
+
+    public Integer getOrdTard() {
+        return ordTard;
+    }
+
+    public void setOrdTard(Integer ordTard) {
+        this.ordTard = ordTard;
+    }
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

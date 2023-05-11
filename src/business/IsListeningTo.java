@@ -5,7 +5,7 @@ public class IsListeningTo extends Edge{
         super(name);
     }
 
-    public IsListeningTo(String name, double metric, WebSite dest, Person src) {
+    public IsListeningTo(String name, Integer metric, WebSite dest, Person src) {
         super(name, metric, dest, src);
     }
 }

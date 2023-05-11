@@ -6,7 +6,7 @@ public class IsLikes extends Edge {
         super(name);
     }
 
-    public IsLikes(String name, double metric, Node dest, Node src) {
+    public IsLikes(String name, Integer metric, Node dest, Node src) {
         super(name, metric, dest, src);
     }
 }

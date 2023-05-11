@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Edge implements Serializable {
     protected String name;
-    protected double metric;
+    protected Integer metric;
     protected Node dest;
     protected Node src;
     public Edge(String name) {
         this.name = name;
     }
-    public Edge(String name, double metric, Node dest, Node src) {
+    public Edge(String name, Integer metric, Node dest, Node src) {
         this.name = name;
         this.metric = metric;
         this.dest = dest;
@@ -24,11 +24,11 @@ public class Edge implements Serializable {
         this.name = name;
     }
 
-    public double getMetric() {
+    public Integer getMetric() {
         return metric;
     }
 
-    public void setMetric(double metric) {
+    public void setMetric(Integer metric) {
         this.metric = metric;
     }
     public Node getSrc() {

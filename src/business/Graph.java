@@ -48,7 +48,7 @@ public class Graph implements Serializable {
         nodeList.put(name, node);
     }
 
-    public void addEdge(String src, String dest, double metric, String name) {
+    public void addEdge(String src, String dest, Integer metric, String name) {
 
         if (findNode(src) == null) {
             Node nodeSource = new Node(src);
@@ -318,6 +318,47 @@ public class Graph implements Serializable {
             }
         } while (cycle == false && end == false);
     }
+    public void ordPlusTot() throws IOException, ClassNotFoundException {
+        this.resetNodes();
+        this.resetTableVPCC();
+        this.triTopologique();
+        StringBuilder sb = new StringBuilder();
+        for(List<Node> a : miseEnRang.values()){
+            for(Node n: a){
+                for(Edge e : n.getExitingEdges().values()){
+                    Node dest = e.getDest();
+                    if(dest.ordTot<n.ordTot + e.getMetric()){
+                        dest.ordTot = n.ordTot + e.getMetric();
+                    }
+                }
+                sb.append(n.getName() + "(" + n.getOrdTot() + ") --> ");
+
+            }
+        }
+        System.out.println(sb.toString());
+    }
+    public void ordPlusTard() throws IOException, ClassNotFoundException {
+        this.ordPlusTot();
+        StringBuilder sb1 = new StringBuilder();
+        sb1.append("\n");
+
+        for(int i = miseEnRang.size() -1 ; i>0 ;i--){
+            List<Node> arrayOfNode = miseEnRang.get(i);
+            for(Node n : arrayOfNode){
+                if(i == miseEnRang.size() -1 ){
+                    n.setOrdTard(n.getOrdTot());
+                }
+                for(Edge e : n.getIncomingEdges().values()){
+                    Node src = e.getSrc();
+                    if(src.ordTard > n.ordTard - e.getMetric()){
+                        src.setOrdTard(n.ordTard - e.getMetric());
+                    }
+                }
+                sb1.append(n.getName() + "(" + n.getOrdTard() + ") <-- ");
+            }
+        }
+        System.out.println(sb1.toString());
+    }
 
     public static Graph copyGraph(Graph g) {
         try {
@@ -335,7 +376,7 @@ public class Graph implements Serializable {
         }
     }
 
-    private void deleteTablesVPCC() {
+    private void resetTableVPCC() {
         for (Node n : nodeList.values()) {
             n.setTableVPCC(null);
         }
@@ -348,6 +389,8 @@ public class Graph implements Serializable {
             n.setLevel(0);
             n.setPredecessor(null);
             n.setDjikstraWeight(Integer.MAX_VALUE);
+            n.setOrdTot(0);
+            n.setOrdTard(Integer.MAX_VALUE);
 
         }
     }

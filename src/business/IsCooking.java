@@ -5,7 +5,7 @@ public class IsCooking extends Edge{
         super(name);
     }
 
-    public IsCooking(String name, double metric, Recipe dest, Person src) {
+    public IsCooking(String name, Integer metric, Recipe dest, Person src) {
         super(name, metric, dest, src);
     }
 }
